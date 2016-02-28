@@ -1,0 +1,76 @@
+RstudioPresentation
+========================================================
+author: Luis Botero
+date:   2/28/2016
+Final project of the Developing Data Products course
+
+========================================================
+
+# Objective
+
+This App shows different cluster configurations from the 
+mtcars dataset, allows the user to select a variable and
+cluster size and plots that variable vs mpg using the 
+kmeans algorithm
+
+__The mtcars Dataset__
+
+The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973--74 models).
+
+_Documentation reproduced from R 3.0.2. License: GPL-2._
+
+========================================================
+
+# Variables
+
+Clusters sample using Shiny Apps and the mtcars dataset
+
+
+
+The App allows the user to select one of the mtcars variables
+```{r, echo=FALSE}
+descript<-c('Cylinders','Displacement','Horsepower','Drat','Weight','qsec','V or Straight engine','Auto/Manual','Gears','Carburator')
+# Variable names from the mtcars dataset and add description on a second column
+df<-data.frame(names(mtcars)[2:11],descript)
+names(df)<-c('Variable','Description')
+# Formats the df to the left
+format(df,justify="left")
+
+```
+For the clustering sample, the variables hp and mpg will be used for simplicity sake.
+
+Classic Clustering Sample using Kmeans
+========================================================
+mtcars data set hp~mpg
+
+```{r, echo=FALSE}
+# clustering sample from a subset of hp and mpg from the mtcars dataset
+kc<-kmeans(mtcars,3)
+plot(mtcars[c("hp", "mpg")], col=kc$cluster)
+points(kc$centers[,c("hp","mpg")],col=1:3,  pch=8, cex=3)
+
+```
+
+Cluster plot using PAM
+========================================================
+
+```{r, echo=FALSE}
+
+library(cluster)
+
+# group into 3 clusters
+
+pam.result <- pam(mtcars[c("mpg","hp")], 3)
+
+layout(matrix(c(1, 2), 1, 2)) # 2 graphs per page
+
+plot(pam.result)
+```
+
+
+PAM (Partitioning Around Medoids) is a classic algorithm for k-medoids clustering, more robust in presence of outliers (1)
+
+_http://www.rdatamining.com/docs/data-clustering-with-r_
+
+
+
